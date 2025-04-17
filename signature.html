@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Badge de Productivité</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+    body {
+      font-family: 'Comic Neue', cursive;
+      background: linear-gradient(135deg, #ffecd2, #a40540);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .badge-area {
+  position: relative;
+  width: 100%;
+  height: 60vh; 
+  margin-top: 20px;
+  max-height: 500px; 
+}
+
+    
+    .badge {
+      width: 100px;
+      height: 100px;
+      background: url('./img/sign.png') no-repeat center center/contain;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.3s ease, top 0.3s ease, left 0.3s ease;
+      cursor: pointer;
+    }
+
+    .fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes boom {
+      0% { transform: scale(0.5) translateY(0); opacity: 1; }
+      100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
+    }
+
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #ff4081;
+      border-radius: 50%;
+      animation: boom 1s ease-out forwards;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .badge-area {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Je soussigné, Ezer Belhassen, certifie en toute objectivité que Nour Dhieb a atteint l’ensemble des objectifs fixés pour la journée.</h1>
+  <p>En conséquence, je lui décerne le badge officiel de productivité quotidienne.</p>
+  <h2><strong><strong>Enzel 3al badge bech tekhou el badge :DDDDDDDDD </strong></strong></h2>
+  <div class="badge-area" id="badge-area">
+    <div class="badge" id="badge"></div>
+  </div>
+  <canvas class="fireworks" id="fireworks"></canvas>
+
+  <script>
+    const badge = document.getElementById('badge');
+    const badgeArea = document.getElementById('badge-area');
+    let escaped = false;
+
+    function getRandomPositionInArea() {
+      const padding = 10;
+      const areaRect = badgeArea.getBoundingClientRect();
+      const x = Math.random() * (areaRect.width - 100 - padding * 2) + padding;
+      const y = Math.random() * (areaRect.height - 100 - padding * 2) + padding;
+      return { x, y };
+    }
+
+    function moveBadge() {
+      if (!escaped) {
+        const { x, y } = getRandomPositionInArea();
+        badge.style.left = `${x}px`;
+        badge.style.top = `${y}px`;
+        badge.style.transform = 'translate(0, 0)';
+      }
+    }
+
+    function triggerFireworks(x, y) {
+      const canvas = document.getElementById('fireworks');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`;
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+      }
+    }
+
+    badge.addEventListener('mouseenter', moveBadge);
+
+    badge.addEventListener('click', (e) => {
+      escaped = true;
+      alert('🎉 Mabrouk lella, khdit el Badge de productivité!!!!!!!!! keep up ❤️ (sinn yetahchelek w takhlatch harvard)');
+      triggerFireworks(e.clientX, e.clientY);
+    });
+  </script>
+</body>
+</html>
